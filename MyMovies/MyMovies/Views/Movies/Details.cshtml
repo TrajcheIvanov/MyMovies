@@ -1,14 +1,19 @@
 ﻿@model MyMovies.Models.Movie
 
-<h1>@Model.Title</h1>
+@{ ViewBag.Title = "Details"; }
 
-<img src="@Model.ImgUrl" alt="Alternate Text" />
+<div class="container" style="text-align:center">
 
-<h2> Stars</h2>
-<p>@Model.Stars</p>
+    <h1>@Model.Title</h1>
 
-<h2> Genre</h2>
-<p>@Model.Genre</p>
+    <img src="@Model.ImgUrl" alt="Alternate Text" style="display:block; margin-left:auto; margin-right:auto; width:80%" />
 
-<h2> Storyline</h2>
-<p>@Model.Storyline</p>
+    <h2> Stars</h2>
+    <p>@Model.Stars</p>
+
+    <h2> Genre</h2>
+    <p>@Model.Genre</p>
+
+    <h2> Storyline</h2>
+    <p>@Model.Storyline</p>
+</div>
