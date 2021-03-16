@@ -28,7 +28,7 @@ namespace MyMovies
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddTransient<IMoviesRepository, MoviesRepository>();
+            services.AddTransient<IMoviesRepository, MoviesSqlRepository>();
             services.AddTransient<IMoviesService, MoviesService>();
         }
 
