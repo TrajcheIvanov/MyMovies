@@ -6,11 +6,20 @@
     ViewBag.Title = "Overview";
 }
 
+<br />
+<br />  
+<form action="/Movies/Overview" method="get" class="form-inline">
+    <div class="form-group">
+        <input type="text" name="Title" value="" class="form-control" placeholder="Search by Title" />
+        <input type="submit" value="Search" class="btn btn-success" />
+    </div>
+</form>
 <div class="row">
     @foreach (var movie in Model)
     {
         <br />
         <br />
+      
         <div class="card mb-3">
             <img src="@movie.ImgUrl" class="card-img-top" alt="...">
             <div class="card-body">

@@ -1,66 +1,54 @@
 ﻿using MyMovies.Models;
 using MyMovies.Repositories.Interfaces;
-using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-
+using System.Text;
 
 namespace MyMovies.Repositories
 {
     public class MoviesRepository : IMoviesRepository
     {
-        
-        const string Path = "Movies.txt";
-        public MoviesRepository()
+        private MyMoviesDbContext _context { get; set; }
+
+        public MoviesRepository(MyMoviesDbContext context)
         {
-            if (!File.Exists(Path))
-            {
-                File.WriteAllText(Path, "[]");
-            }
-
-            var result = File.ReadAllText(Path);
-            var deserializedList = JsonConvert.DeserializeObject<List<Movie>>(result);
-            Movies = deserializedList;
-
-            
+            _context = context;
         }
-
-        public List<Movie> Movies { get; set; }
+        public void Add(Movie movie)
+        {
+            _context.Movies.Add(movie);
+            _context.SaveChanges();
+        }
 
         public List<Movie> GetAll()
         {
-            return Movies;
+            var result = _context.Movies.ToList();
+            return result;
         }
 
         public Movie GetById(int id)
         {
-            return Movies.FirstOrDefault(x => x.Id == id);
+            var result = _context.Movies.FirstOrDefault(x => x.Id == id);
+            return result;
         }
 
-        public void Add(Movie movie)
+        public List<Movie> GetByTitle(string title)
         {
-            movie.Id = GenerateId();
-            Movies.Add(movie);
-            SaveChanges();
+            var result = _context.Movies.Where(x => x.Title.Contains(title)).ToList();
+            return result;
         }
 
-        private int GenerateId()
+        public void Delete(Movie movie)
         {
-            var maxId = 0;
-
-            if (Movies.Any())
-            {
-                maxId = Movies.Max(x => x.Id);
-            }
-
-            return maxId + 1;
+            _context.Movies.Remove(movie);
+            _context.SaveChanges();
         }
 
-        private void SaveChanges()
+        public void Update(Movie movie)
         {
-            var serialized = JsonConvert.SerializeObject(Movies);
-            File.WriteAllText(Path, serialized);
+            _context.Movies.Update(movie);
+            _context.SaveChanges();
         }
     }
 }

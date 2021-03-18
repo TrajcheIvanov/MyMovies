@@ -90,5 +90,11 @@ namespace MyMovies.Repositories
 
             return result;
         }
+
+        // Not implemented
+        public List<Movie> GetByTitle(string title)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
