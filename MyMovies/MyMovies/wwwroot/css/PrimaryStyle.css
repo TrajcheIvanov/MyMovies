@@ -1,6 +1,30 @@
 ﻿
 .card {
     background-color: lightgoldenrodyellow;
-    border: solid 3px lightgreen;
+    border: solid 3px grey;
 }
 
+.card-group{
+    width: 95%;
+    margin: 7rem auto;
+    display: flex;
+    align-items:center;
+    justify-content: space-around;
+    flex-wrap:wrap;
+
+}
+
+.card {
+    height: 25rem;
+    width: 30rem;
+    padding: 1rem;
+    margin: 2rem;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+img {
+    height:50%;
+    width:100%;
+    object-fit:cover;
+}

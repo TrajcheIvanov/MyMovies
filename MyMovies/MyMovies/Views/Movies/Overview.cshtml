@@ -14,23 +14,30 @@
         <input type="submit" value="Search" class="btn btn-success" />
     </div>
 </form>
-<div class="row">
-    @foreach (var movie in Model)
-    {
-        <br />
-        <br />
-      
-        <div class="card mb-3">
-            <img src="@movie.ImgUrl" class="card-img-top" alt="...">
-            <div class="card-body">
+<div class="card-group container-fluid">
+    <div class="row">
+
+        @foreach (var movie in Model)
+        {
+            <br />
+            <br />
+            <div class="card col-3">
+                <img src="@movie.ImgUrl" alt="Movie Img" class="card-img-top" />
+
                 <h3 class="card-title">@movie.Title</h3>
-                <p class="card-text">@movie.Genre</p>
-                @*<p class="card-text">@movie.Stars</p>
-            <p class="card-text">@movie.Storyline</p>*@
+                <p class="card-text">@movie.Genre </p>
+
+                <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="btn-info">Click here for more info about the movie</a>
+
+
             </div>
-            <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="btn btn-info btn-lg btn-block">Click here for more info about the movie</a>
-            @*<a href="/Movies/Details/@movie.Id" class="btn btn-info btn-lg btn-block">Click here for more info about the movie</a>*@
-        </div>
-    }
+
+
+        }
+    </div>
+      
+   
 </div>
+
+
 

@@ -32,6 +32,11 @@ namespace MyMovies.Repositories
             
         }
 
+        public void Delete(Movie movie)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Movie> GetAll()
         {
             var result = new List<Movie>();
@@ -93,6 +98,11 @@ namespace MyMovies.Repositories
 
         // Not implemented
         public List<Movie> GetByTitle(string title)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Movie movie)
         {
             throw new NotImplementedException();
         }

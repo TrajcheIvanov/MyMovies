@@ -47,7 +47,14 @@ namespace MyMovies.Repositories
 
         public void Update(Movie movie)
         {
-            _context.Movies.Update(movie);
+            var movieForUpdate = _context.Movies.FirstOrDefault(x => x.Id == movie.Id);
+            movieForUpdate.Title = movie.Title;
+            movieForUpdate.ImgUrl = movie.ImgUrl;
+            movieForUpdate.Stars = movie.Stars;
+            movieForUpdate.Storyline = movie.Storyline;
+            movieForUpdate.Genre = movie.Genre;
+
+            _context.Movies.Update(movieForUpdate);
             _context.SaveChanges();
         }
     }

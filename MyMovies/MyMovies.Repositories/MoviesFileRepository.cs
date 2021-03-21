@@ -68,5 +68,15 @@ namespace MyMovies.Repositories
         {
             throw new System.NotImplementedException();
         }
+
+        public void Delete(Movie movie)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Update(Movie movie)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
