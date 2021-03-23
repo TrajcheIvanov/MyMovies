@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyMovies.Common.Exceptions;
+using MyMovies.Mappings;
 using MyMovies.Models;
 using MyMovies.Services.Interfaces;
+using MyMovies.ViewModels;
 using System;
+using System.Linq;
 
 namespace MyMovies.Controllers
 {
@@ -17,7 +20,9 @@ namespace MyMovies.Controllers
         public IActionResult Overview(string title)
         {
             var movies = _service.GetRecipesByTitle(title);
-            return View(movies);
+
+            var moviesOverviewModels = movies.Select(x => x.ToOverviewModel()).ToList();
+            return View(moviesOverviewModels);
         }
         
         public IActionResult ManageMovies(string errorMEssage, string successMessage, string updateMessage)
@@ -26,7 +31,9 @@ namespace MyMovies.Controllers
             ViewBag.SuccessMessage = successMessage;
             ViewBag.UpdateMEssage = updateMessage;
             var movies = _service.GetAllMovies();
-            return View(movies);
+
+            var manageModels = movies.Select(x => x.ToManageMovieModel()).ToList();
+            return View(manageModels);
         }
         public IActionResult Details(int id)
         {
@@ -39,7 +46,7 @@ namespace MyMovies.Controllers
                     return RedirectToAction("ErrorNotFound", "Info");
                 }
 
-                return View(movie);
+                return View(movie.ToDetailsModel());
             }
             catch (Exception)
             {
@@ -55,11 +62,12 @@ namespace MyMovies.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Movie movie)
+        public IActionResult Create(MovieCreateModel movie)
         {
             if (ModelState.IsValid)
             {
-                _service.CreateMovie(movie);
+                var domainModel = movie.ToModel();
+                _service.CreateMovie(domainModel);
                 return RedirectToAction("ManageMovies", new { SuccessMessage = "Movie added sucessfully"});
             }
 
@@ -84,7 +92,8 @@ namespace MyMovies.Controllers
             }
         }
 
-        public IActionResult Edit(int Id)
+        [HttpGet]
+        public IActionResult Update(int Id)
         {
             try
             {
@@ -92,7 +101,7 @@ namespace MyMovies.Controllers
 
                 if (movie != null)
                 {
-                    return RedirectToAction("EditMovie", "Movies", movie);
+                    return View(movie.ToUpdateModel());
                 } else
                 {
                     throw new NotFoundException($"The Movie with Id {Id} was not found");
@@ -116,20 +125,31 @@ namespace MyMovies.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(Movie movie)
+        public IActionResult Update(MovieUpdateModel movie)
         {
             if (ModelState.IsValid)
             {
-                _service.Update(movie);
-                return RedirectToAction("ManageMovies", new { UpdateMEssage = "Movie updated sucessfully" });
+                try
+                {
+                    _service.Update(movie.ToModel());
+                    return RedirectToAction("ManageMovies", new { UpdateMEssage = "Movie updated sucessfully" });
+                }
+                catch (NotFoundException ex)
+                {
+
+                    return RedirectToAction("ManageMovies", new { ErrorMessage = ex.Message });
+                }
+                catch (Exception)
+                {
+                    return RedirectToAction("InternalError", "Info");
+                }
+
+                
             }
             else
             {
                 return RedirectToAction("InternalError", "Info");
             }
-
-            
         }
-
     }
 }

@@ -2,9 +2,10 @@
 .card {
     background-color: lightgoldenrodyellow;
     border: solid 3px grey;
+    border-radius: 1rem;
 }
 
-.card-group{
+/*.card-group{
     width: 95%;
     margin: 7rem auto;
     display: flex;
@@ -12,19 +13,19 @@
     justify-content: space-around;
     flex-wrap:wrap;
 
-}
+}*/
 
 .card {
-    height: 25rem;
-    width: 30rem;
-    padding: 1rem;
-    margin: 2rem;
+    height: auto;
+    /*width: 30rem;*/
+    padding: 2rem;
+    margin: 1rem;
     text-align: center;
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
 }
 
 img {
-    height:50%;
+    height:60%;
     width:100%;
     object-fit:cover;
 }

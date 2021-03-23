@@ -1,4 +1,4 @@
-﻿@model List<MyMovies.Models.Movie>
+﻿@model List<MyMovies.ViewModels.MovieManageMoviesModel>
 
 @{
     ViewBag.Title = "Manage movies";
@@ -54,7 +54,7 @@ else
                     <td>@movie.Id</td>
                     <td>@movie.Title</td>
                     <td>
-                        <a href="/Movies/Edit/@movie.Id" class="text-primary">Edit</a> |
+                        <a href="/Movies/Update/@movie.Id" class="text-primary">Edit</a> |
                         <a href="/Movies/Delete/@movie.Id" class="text-danger">Delete</a>
 
                     </td>

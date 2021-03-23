@@ -2,6 +2,7 @@
 using MyMovies.Models;
 using MyMovies.Repositories.Interfaces;
 using MyMovies.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace MyMovies.Services
@@ -27,6 +28,7 @@ namespace MyMovies.Services
 
         public void CreateMovie(Movie movie)
         {
+            movie.DateCreated = DateTime.Now;
             _moviesRepository.Add(movie);
         }
 
@@ -57,8 +59,27 @@ namespace MyMovies.Services
 
         public void Update(Movie movie)
         {
-              
-             _moviesRepository.Update(movie);
+
+            var movieForUpdate = _moviesRepository.GetById( movie.Id);
+
+            if (movieForUpdate != null)
+            {
+                movieForUpdate.Title = movie.Title;
+                movieForUpdate.ImgUrl = movie.ImgUrl;
+                movieForUpdate.Stars = movie.Stars;
+                movieForUpdate.Storyline = movie.Storyline;
+                movieForUpdate.Genre = movie.Genre;
+                movieForUpdate.DateModified = DateTime.Now;
+
+                _moviesRepository.Update(movieForUpdate);
+            }
+            else
+            {
+                throw new NotFoundException($"The recipe with id {movie.Id} was not found");
+            }
+                
+
+            
             
         }
     }

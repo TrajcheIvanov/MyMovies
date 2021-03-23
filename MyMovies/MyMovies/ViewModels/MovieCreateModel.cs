@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace MyMovies.Models
+
+namespace MyMovies.ViewModels
 {
-    public class Movie
+    public class MovieCreateModel
     {
-        public int Id { get; set; }
         [Required]
-        [StringLength (maximumLength: 30, MinimumLength =3)]
+        [StringLength(maximumLength: 30, MinimumLength = 3)]
         public string Title { get; set; }
         [Required]
         public string ImgUrl { get; set; }
@@ -19,9 +17,6 @@ namespace MyMovies.Models
         public string Genre { get; set; }
         [Required]
         public string Storyline { get; set; }
-        [Required]
-        public DateTime DateCreated { get; set; }
-
-        public DateTime DateModified { get; set; }
+        
     }
 }

@@ -1,4 +1,4 @@
-﻿@model MyMovies.Models.Movie
+﻿@model MyMovies.ViewModels.MovieDetailsModel
 
 @{ ViewBag.Title = "Details"; }
 
@@ -16,4 +16,6 @@
 
     <h2> Storyline</h2>
     <p>@Model.Storyline</p>
+
+    <h2> Date created: @Model.DateCreated</h2>
 </div>

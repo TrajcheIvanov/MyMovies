@@ -1,6 +1,6 @@
 ﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
 
-@model List<MyMovies.Models.Movie>
+@model List<MyMovies.ViewModels.MovieOverviewModel>
 
 @{
     ViewBag.Title = "Overview";
@@ -14,26 +14,21 @@
         <input type="submit" value="Search" class="btn btn-success" />
     </div>
 </form>
-<div class="card-group container-fluid">
-    <div class="row">
+<div class="container container-fluid">
+    <div class="row flex-wrap justify-content-around">
+        
+             @foreach (var movie in Model)
+            {
+                
+                    <div class="card col col-3">
+                        <img src="@movie.ImgUrl" alt="Movie Img" class="card-img-top" />
 
-        @foreach (var movie in Model)
-        {
-            <br />
-            <br />
-            <div class="card col-3">
-                <img src="@movie.ImgUrl" alt="Movie Img" class="card-img-top" />
-
-                <h3 class="card-title">@movie.Title</h3>
-                <p class="card-text">@movie.Genre </p>
-
-                <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="btn-info">Click here for more info about the movie</a>
-
-
-            </div>
-
-
-        }
+                        <h4 class="card-title">@movie.Title</h4>
+                        <p class="card-text">@movie.Genre </p>
+                          <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="btn-secondary"><b>More info</b></a>
+                   </div>
+            }
+        
     </div>
       
    
