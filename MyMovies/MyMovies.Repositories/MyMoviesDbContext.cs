@@ -5,9 +5,11 @@ namespace MyMovies.Repositories
 {
     public class MyMoviesDbContext : DbContext
     {
-        public MyMoviesDbContext(DbContextOptions<MyMoviesDbContext>options) : base(options)
-        {}
+        public MyMoviesDbContext(DbContextOptions<MyMoviesDbContext> options) : base(options)
+        { }
         public DbSet<Movie> Movies { get; set; }
+
+        public DbSet<User> Users {get; set;}
        
     }
 }

@@ -1,6 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,13 +28,22 @@ namespace MyMovies
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //configure in startup
+            //see configuration below
             services.AddDbContext<MyMoviesDbContext>(
                 x => x.UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=MyMovies;Trusted_Connection=True;")
                 );
 
-            services.AddControllersWithViews();
-            services.AddTransient<IMoviesRepository, MoviesRepository>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
+            //register services
+            object p = services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddTransient<IMoviesService, MoviesService>();
+            services.AddTransient<IAuthService, AuthService>();
+
+            //register repositories
+            services.AddTransient<IMoviesRepository, MoviesRepository>();
+            services.AddTransient<IUserRepository, UsersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +64,7 @@ namespace MyMovies
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

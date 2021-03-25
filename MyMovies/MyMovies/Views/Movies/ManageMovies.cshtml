@@ -55,7 +55,7 @@ else
                     <td>@movie.Title</td>
                     <td>
                         <a href="/Movies/Update/@movie.Id" class="text-primary">Edit</a> |
-                        <a href="/Movies/Delete/@movie.Id" class="text-danger">Delete</a>
+                        <a href="/Movies/Delete/@movie.Id" class="text-danger" onclick="return confirm('Are you sure?')">Delete</a>
 
                     </td>
                 </tr>

@@ -102,7 +102,8 @@ namespace MyMovies.Controllers
                 if (movie != null)
                 {
                     return View(movie.ToUpdateModel());
-                } else
+                } 
+                else
                 {
                     throw new NotFoundException($"The Movie with Id {Id} was not found");
                 }
