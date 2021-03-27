@@ -19,7 +19,7 @@ namespace MyMovies.Services
             _userRepository = userRepository;
         }
 
-        public StatusModel SignIn(string username, string password, HttpContext httpContext)
+        public StatusModel SignIn(string username, string password, bool isPersistent, HttpContext httpContext)
         {
             var response = new StatusModel();
             var user = _userRepository.GetUsername(username);
@@ -38,7 +38,9 @@ namespace MyMovies.Services
 
                 var principal = new ClaimsPrincipal(identity);
 
-                Task.Run(() => httpContext.SignInAsync(principal)).GetAwaiter().GetResult();
+                var authProps = new AuthenticationProperties() { IsPersistent = isPersistent };
+
+                Task.Run(() => httpContext.SignInAsync(principal, authProps)).GetAwaiter().GetResult();
 
 
                 response.IsSuccessful = true;
@@ -50,6 +52,11 @@ namespace MyMovies.Services
             }
 
             return response;
+        }
+
+        public void SignOut(HttpContext httpContext)
+        {
+            Task.Run(() => httpContext.SignOutAsync()).GetAwaiter().GetResult();
         }
     }
 }

@@ -34,12 +34,19 @@ namespace MyMovies
                 x => x.UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=MyMovies;Trusted_Connection=True;")
                 );
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+                options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+                    options.LoginPath = "/Auth/SignIn";
+                }
+                );
 
             //register services
             object p = services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddTransient<IMoviesService, MoviesService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IUsersService,UsersService>();
 
             //register repositories
             services.AddTransient<IMoviesRepository, MoviesRepository>();

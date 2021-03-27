@@ -8,5 +8,7 @@ namespace MyMovies.Repositories.Interfaces
     public interface IUserRepository
     {
         User GetUsername(string username);
+
+        User GetById(int userId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyMovies.Common.Exceptions;
 using MyMovies.Mappings;
 using MyMovies.Models;
@@ -9,6 +10,7 @@ using System.Linq;
 
 namespace MyMovies.Controllers
 {
+    [Authorize]
     public class MoviesController : Controller
     {
         private IMoviesService _service { get; set; }
@@ -17,6 +19,8 @@ namespace MyMovies.Controllers
         {
             _service = service;
         }
+
+        [AllowAnonymous]
         public IActionResult Overview(string title)
         {
             var movies = _service.GetRecipesByTitle(title);
