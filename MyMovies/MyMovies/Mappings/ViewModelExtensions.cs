@@ -31,5 +31,14 @@ namespace MyMovies.Mappings
             };
         }
 
+        public static User ToModel(this UserUpdateModel updateModel)
+        {
+            return new User
+            {
+                Username = updateModel.Username,
+                Email = updateModel.Email,
+            };
+        }
+
     }
 }

@@ -10,5 +10,7 @@ namespace MyMovies.Repositories.Interfaces
         User GetUsername(string username);
 
         User GetById(int userId);
+
+        void Update(User user);
     }
 }

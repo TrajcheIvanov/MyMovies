@@ -22,5 +22,11 @@ namespace MyMovies.Repositories
         {
             return _context.Users.FirstOrDefault(x => x.Username == username);
         }
+
+        public void Update(User user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
+        }
     }
 }
