@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace MyMovies.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "IsAdmin")]
     public class MoviesController : Controller
     {
         private IMoviesService _service { get; set; }
@@ -39,6 +39,8 @@ namespace MyMovies.Controllers
             var manageModels = movies.Select(x => x.ToManageMovieModel()).ToList();
             return View(manageModels);
         }
+
+        [AllowAnonymous]
         public IActionResult Details(int id)
         {
             try

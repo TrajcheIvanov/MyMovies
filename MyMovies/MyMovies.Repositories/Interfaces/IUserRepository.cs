@@ -12,5 +12,8 @@ namespace MyMovies.Repositories.Interfaces
         User GetById(int userId);
 
         void Update(User user);
+
+        bool CheckIfExists(string username, string email);
+        void Add(User user);
     }
 }

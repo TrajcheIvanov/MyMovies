@@ -40,5 +40,15 @@ namespace MyMovies.Mappings
             };
         }
 
+        public static User ToModel(this SignUpModel signUpModel)
+        {
+            return new User
+            {
+                Username = signUpModel.Username,
+                Email = signUpModel.Email,
+                Password = signUpModel.Password,
+            };
+        }
+
     }
 }

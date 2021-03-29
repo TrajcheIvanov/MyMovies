@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyMovies.Repositories;
 
 namespace MyMovies.Repositories.Migrations
 {
     [DbContext(typeof(MyMoviesDbContext))]
-    partial class MyMoviesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210329205619_AddedDateCreatedInUserModel")]
+    partial class AddedDateCreatedInUserModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,9 +73,6 @@ namespace MyMovies.Repositories.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Password")
                         .IsRequired()
