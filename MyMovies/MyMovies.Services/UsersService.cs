@@ -15,9 +15,52 @@ namespace MyMovies.Services
         {
             _userRepository = userRepository;
         }
+
+        public StatusModel Delete(int Id)
+        {
+            var response = new StatusModel();
+            var userToDelete = _userRepository.GetById(Id);
+
+            if (userToDelete != null)
+            {
+                _userRepository.Remove(userToDelete);
+            }
+            else
+            {
+                response.IsSuccessful = false;
+            }
+
+            return response;
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return _userRepository.GetAll();
+        }
+
         public User GetDetails(string userId)
         {
             return _userRepository.GetById(int.Parse(userId));
+        }
+
+        public StatusModel ToggleAdmin(int id)
+        {
+            var response = new StatusModel();
+
+            var user = _userRepository.GetById(id);
+
+            if (user.IsAdmin)
+            {
+                user.IsAdmin = false;
+                Update(user);
+            }
+            else
+            {
+                user.IsAdmin = true;
+                Update(user);
+            }
+
+            return response;
         }
 
         public StatusModel Update(User user)

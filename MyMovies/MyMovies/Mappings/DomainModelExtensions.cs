@@ -1,5 +1,6 @@
 ﻿using MyMovies.Models;
 using MyMovies.ViewModels;
+using System.Collections.Generic;
 
 namespace MyMovies.Mappings
 {
@@ -73,6 +74,23 @@ namespace MyMovies.Mappings
                Email = user.Email,
 
             };
+        }
+
+        public static List<ManageUserModel> ToManageUserModels(this List<User> users)
+        {
+            var manageUsers = new List<ManageUserModel>();
+
+            foreach (var user in users)
+            {
+                var newManageUserModel = new ManageUserModel();
+                newManageUserModel.Id = user.Id;
+                newManageUserModel.Username = user.Username;
+                newManageUserModel.IsAdministrator = user.IsAdmin;
+
+                manageUsers.Add(newManageUserModel);
+            }
+
+            return manageUsers;
         }
     }
 }

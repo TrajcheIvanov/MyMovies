@@ -82,5 +82,41 @@ namespace MyMovies.Controllers
             }
         }
 
+        public IActionResult ManageUsers()
+        {
+            var domainUsers = _usersService.GetAllUsers();
+
+            return View(domainUsers.ToManageUserModels());
+        }
+
+        public IActionResult ToggleAdmin(int Id)
+        {
+            var response = _usersService.ToggleAdmin(Id);
+
+            if (response.IsSuccessful)
+            {
+                return RedirectToAction("ManageUsers");
+            }
+            else
+            {
+                return RedirectToAction("ErrorNotFound", "Info");
+            }
+
+        }
+
+        public IActionResult Delete(int Id)
+        {
+            var response = _usersService.Delete(Id);
+
+            if (response.IsSuccessful)
+            {
+                return RedirectToAction("ManageUsers");
+            }
+            else
+            {
+                return RedirectToAction("ErrorNotFound", "Info");
+            }
+        }
+
     }
 }
