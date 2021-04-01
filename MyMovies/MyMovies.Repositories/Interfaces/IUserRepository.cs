@@ -5,19 +5,11 @@ using System.Text;
 
 namespace MyMovies.Repositories.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserRepository : IBaseRepository<User>
     {
         User GetUsername(string username);
 
-        User GetById(int userId);
-
-        void Update(User user);
-
         bool CheckIfExists(string username, string email);
-        void Add(User user);
-
-        List<User> GetAll();
-
-        void Remove(User user);
+        
     }
 }

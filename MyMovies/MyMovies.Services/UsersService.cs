@@ -2,9 +2,7 @@
 using MyMovies.Repositories.Interfaces;
 using MyMovies.Services.DtoModels;
 using MyMovies.Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MyMovies.Services
 {
@@ -23,7 +21,7 @@ namespace MyMovies.Services
 
             if (userToDelete != null)
             {
-                _userRepository.Remove(userToDelete);
+                _userRepository.Delete(userToDelete);
             }
             else
             {

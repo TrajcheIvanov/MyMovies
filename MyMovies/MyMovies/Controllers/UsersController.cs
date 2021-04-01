@@ -5,6 +5,7 @@ using MyMovies.Models;
 using MyMovies.Services.Interfaces;
 using MyMovies.ViewModels;
 using System;
+using System.Linq;
 
 namespace MyMovies.Controllers
 {
@@ -82,39 +83,46 @@ namespace MyMovies.Controllers
             }
         }
 
-        public IActionResult ManageUsers()
+        [Authorize(Policy = "IsAdmin")]
+        public IActionResult ManageUsers(string successMessage, string errorMessage)
         {
+            ViewBag.SuccessMessage = successMessage;
+            ViewBag.ErrorMessage = errorMessage;
             var domainUsers = _usersService.GetAllUsers();
+            var id = int.Parse(User.FindFirst("Id").Value);
+            var viewUsers = domainUsers.Where(x => x.Id != id).ToList();
 
-            return View(domainUsers.ToManageUserModels());
+            return View(viewUsers.ToManageUserModels());
         }
 
+        [Authorize(Policy = "IsAdmin")]
         public IActionResult ToggleAdmin(int Id)
         {
             var response = _usersService.ToggleAdmin(Id);
 
             if (response.IsSuccessful)
             {
-                return RedirectToAction("ManageUsers");
+                return RedirectToAction("ManageUsers", new { SuccessMessage = "User updated successfuly" });
             }
             else
             {
-                return RedirectToAction("ErrorNotFound", "Info");
+                return RedirectToAction("ManageUsers", new { ErrorMessage = response.Message });
             }
 
         }
 
+        [Authorize(Policy = "IsAdmin")]
         public IActionResult Delete(int Id)
         {
             var response = _usersService.Delete(Id);
 
             if (response.IsSuccessful)
             {
-                return RedirectToAction("ManageUsers");
+                return RedirectToAction("ManageUsers", new { SuccessMessage = "User deleted successfuly" });
             }
             else
             {
-                return RedirectToAction("ErrorNotFound", "Info");
+                return RedirectToAction("ManageUsers", new { ErrorMessage = response.Message });
             }
         }
 
