@@ -1,4 +1,5 @@
-﻿using MyMovies.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using MyMovies.Models;
 using MyMovies.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,14 @@ namespace MyMovies.Repositories
             return result;
         }
 
+        public override Movie GetById(int entityId)
+        {
+            var movie = _context.Movies
+                .Include(x => x.Comments)
+                    .ThenInclude(x => x.User)
+                .FirstOrDefault(x => x.Id == entityId);
+
+            return movie;
+        }
     }
 }

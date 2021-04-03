@@ -19,3 +19,31 @@
 
     <h2> Date created: @Model.DateCreated</h2>
 </div>
+
+<br />  
+<br />  
+<hr />
+<h2>Comments: </h2>
+<hr />  
+
+@if (User.Identity.IsAuthenticated)
+{
+        <form asp-controller="Comments" asp-action="Add" method="post">
+            <input type="text" name="movieId" value="@Model.Id"  hidden/>
+            <div class="form-group">
+            <textarea type="text" name="comment" class="form-control" cols="20" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Comment</button>
+        </form>
+}
+
+
+
+@foreach (var comment in Model.Comments.OrderByDescending(x=> x.DateCreated))
+{
+<hr />  
+<p> <b>Comennted by:</b>  @comment.Username</p>
+<p> <b>Date:</b>  @comment.DateCreated </p>
+<p> @comment.Message</p>
+}
+

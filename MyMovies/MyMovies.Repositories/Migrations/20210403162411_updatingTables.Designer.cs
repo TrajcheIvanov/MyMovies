@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyMovies.Repositories;
 
 namespace MyMovies.Repositories.Migrations
 {
     [DbContext(typeof(MyMoviesDbContext))]
-    partial class MyMoviesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210403162411_updatingTables")]
+    partial class updatingTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,7 +28,7 @@ namespace MyMovies.Repositories.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Message")
@@ -118,7 +120,7 @@ namespace MyMovies.Repositories.Migrations
 
             modelBuilder.Entity("MyMovies.Models.Comment", b =>
                 {
-                    b.HasOne("MyMovies.Models.Movie", "Movie")
+                    b.HasOne("MyMovies.Models.Movie", "Event")
                         .WithMany("Comments")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)

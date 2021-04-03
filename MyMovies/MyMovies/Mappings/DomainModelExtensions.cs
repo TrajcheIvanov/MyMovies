@@ -1,6 +1,7 @@
 ﻿using MyMovies.Models;
 using MyMovies.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyMovies.Mappings
 {
@@ -33,12 +34,14 @@ namespace MyMovies.Mappings
         {
             return new MovieDetailsModel()
             {
+                Id = movie.Id,
                 Title = movie.Title,
                 Genre = movie.Genre,
                 Storyline = movie.Storyline,
                 Stars = movie.Stars,
                 ImgUrl = movie.ImgUrl,
                 DateCreated = movie.DateCreated,
+                Comments = movie.Comments.Select(x=> x.ToCommentModel()).ToList()
 
             };
         }
@@ -91,6 +94,18 @@ namespace MyMovies.Mappings
             }
 
             return manageUsers;
+        }
+
+        public static MovieCommentModel ToCommentModel(this Comment comment)
+        {
+            return new MovieCommentModel
+            {
+                Id = comment.Id,
+                Message = comment.Message,
+                DateCreated = comment.DateCreated,
+                Username = comment.User.Username
+            };
+
         }
     }
 }
