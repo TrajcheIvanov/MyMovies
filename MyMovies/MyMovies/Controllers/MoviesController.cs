@@ -25,8 +25,17 @@ namespace MyMovies.Controllers
         {
             var movies = _service.GetRecipesByTitle(title);
 
+            var overviewDataModel = new MovieOverviewDataModel();
+
             var moviesOverviewModels = movies.Select(x => x.ToOverviewModel()).ToList();
-            return View(moviesOverviewModels);
+            var topFiveViewedMovies = movies.Select(x => x.ToTopFiveViewed()).OrderByDescending(x => x.Views).Take(5).ToList();
+            var topNewFiveMovies = movies.Select(x => x.ToTopNewFiveModel()).OrderByDescending(x => x.DateCreated).Take(5).ToList();
+
+            overviewDataModel.TopFiveViewed = topFiveViewedMovies;
+            overviewDataModel.TopNewFive = topNewFiveMovies;
+            overviewDataModel.OverviewMovies = moviesOverviewModels;
+
+            return View(overviewDataModel);
         }
         
         public IActionResult ManageMovies(string errorMEssage, string successMessage, string updateMessage)
@@ -45,7 +54,7 @@ namespace MyMovies.Controllers
         {
             try
             {
-                var movie = _service.GetMovieById(id);
+                var movie = _service.GetMovieDetails(id);
 
                 if (movie == null)
                 {

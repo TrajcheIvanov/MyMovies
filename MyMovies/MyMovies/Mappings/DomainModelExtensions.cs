@@ -16,6 +16,7 @@ namespace MyMovies.Mappings
                 Title = movie.Title,
                 ImgUrl = movie.ImgUrl,
                 Genre = movie.Genre,
+                Views = movie.Views
 
             };
         }
@@ -58,6 +59,28 @@ namespace MyMovies.Mappings
                 ImgUrl = movie.ImgUrl,
 
             };
+        }
+
+        public static TopFiveViewedSideBarModel ToTopFiveViewed (this Movie movie)
+        {
+            return new TopFiveViewedSideBarModel()
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Views = movie.Views,
+            };
+
+        }
+
+        public static TopNewFiveSideBarModel ToTopNewFiveModel(this Movie movie)
+        {
+            return new TopNewFiveSideBarModel()
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                DateCreated = movie.DateCreated,
+            };
+
         }
 
         public static UserDetailsModel ToDetailsModel(this User user)
@@ -107,5 +130,7 @@ namespace MyMovies.Mappings
             };
 
         }
+
+       
     }
 }

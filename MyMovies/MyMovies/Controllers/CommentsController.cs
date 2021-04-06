@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyMovies.Services.Interfaces;
 using MyMovies.ViewModels;
 using System;
@@ -15,13 +16,24 @@ namespace MyMovies.Controllers
         {
             _commentsService = commentsService;
         }
+
+        [HttpPost]
+        [Authorize]
         public IActionResult Add(CommentCreateModel commentCreateModel)
         {
             var userId = int.Parse(User.FindFirst("Id").Value);
 
-            _commentsService.Add(commentCreateModel.Comment, commentCreateModel.MovieId, userId);
+            var response = _commentsService.Add(commentCreateModel.Comment, commentCreateModel.MovieId, userId);
+            if (response.IsSuccessful)
+            {
+                return RedirectToAction("Details", "Movies", new { id = commentCreateModel.MovieId });
+            }
+            else
+            {
+                return RedirectToAction("ActionNonSuccessful", "Info", new { Message = response.Message });
+            }
 
-            return RedirectToAction("Details", "Movies", new { id = commentCreateModel.MovieId });
+            
         }
     }
 }

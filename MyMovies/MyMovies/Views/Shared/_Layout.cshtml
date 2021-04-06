@@ -4,11 +4,12 @@
     <title>@ViewBag.Title</title>
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/PrimaryStyle.css" rel="stylesheet" />
-<style>
-    body {
-        background-color:lightgray;
-    }
-</style>
+    @RenderSection("Styles", required: false)
+    <style>
+        body {
+            background-color: lightgray;
+        }
+    </style>
 </head>
 <body>
     <div class="container-fluid">
@@ -62,8 +63,9 @@
             </div>
         </nav>
     </div>
-    <div class="container">
+    <div class="container-fluid">
         @RenderBody()
     </div>
+@RenderSection("Scripts", required: false)
 </body>
 </html>
