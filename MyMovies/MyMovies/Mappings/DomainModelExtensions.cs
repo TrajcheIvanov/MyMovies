@@ -61,27 +61,19 @@ namespace MyMovies.Mappings
             };
         }
 
-        public static TopFiveViewedSideBarModel ToTopFiveViewed (this Movie movie)
+        public static MovieSideBarModel ToMovieSidebarModel(this Movie movie)
         {
-            return new TopFiveViewedSideBarModel()
+            return new MovieSideBarModel()
             {
                 Id = movie.Id,
                 Title = movie.Title,
                 Views = movie.Views,
+                DateCreated = movie.DateCreated
             };
 
         }
 
-        public static TopNewFiveSideBarModel ToTopNewFiveModel(this Movie movie)
-        {
-            return new TopNewFiveSideBarModel()
-            {
-                Id = movie.Id,
-                Title = movie.Title,
-                DateCreated = movie.DateCreated,
-            };
-
-        }
+       
 
         public static UserDetailsModel ToDetailsModel(this User user)
         {

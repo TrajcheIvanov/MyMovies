@@ -15,9 +15,11 @@ namespace MyMovies.Controllers
     {
         private IMoviesService _service { get; set; }
 
-        public MoviesController(IMoviesService service)
+        private ISidebarService _sidebarService { get; set; }
+        public MoviesController(IMoviesService service, ISidebarService sidebarService)
         {
             _service = service;
+            _sidebarService = sidebarService;
         }
 
         [AllowAnonymous]
@@ -28,12 +30,9 @@ namespace MyMovies.Controllers
             var overviewDataModel = new MovieOverviewDataModel();
 
             var moviesOverviewModels = movies.Select(x => x.ToOverviewModel()).ToList();
-            var topFiveViewedMovies = movies.Select(x => x.ToTopFiveViewed()).OrderByDescending(x => x.Views).Take(5).ToList();
-            var topNewFiveMovies = movies.Select(x => x.ToTopNewFiveModel()).OrderByDescending(x => x.DateCreated).Take(5).ToList();
-
-            overviewDataModel.TopFiveViewed = topFiveViewedMovies;
-            overviewDataModel.TopNewFive = topNewFiveMovies;
             overviewDataModel.OverviewMovies = moviesOverviewModels;
+            overviewDataModel.SidebarData = _sidebarService.GetSidebarData();
+
 
             return View(overviewDataModel);
         }
@@ -61,7 +60,12 @@ namespace MyMovies.Controllers
                     return RedirectToAction("ErrorNotFound", "Info");
                 }
 
-                return View(movie.ToDetailsModel());
+                var movieDetailsDataModel = new MovieDetailsDataModel();
+
+                movieDetailsDataModel.MovieDetails = movie.ToDetailsModel();
+                movieDetailsDataModel.SidebarData = _sidebarService.GetSidebarData();
+
+                return View(movieDetailsDataModel);
             }
             catch (Exception)
             {

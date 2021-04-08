@@ -1,0 +1,23 @@
+﻿a {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: none;
+    }
+
+.recipeSidebarCard {
+    padding: 2px;
+    border: 1px solid grey;
+    margin: 2px;
+    color: white;
+    background-color: gray;
+    border-radius: 5px;
+}
+
+.recipeSidebarCard:hover {
+        background-color: white;
+        color: grey;
+        transform: scale(0.9);
+ }

@@ -19,5 +19,7 @@ namespace MyMovies.Services.Interfaces
         void Update(Movie movie);
 
         Movie GetMovieDetails(int id);
+        List<Movie> GetMostRecentMovies(int count);
+        List<Movie> GetTopMovies(int count);
     }
 }

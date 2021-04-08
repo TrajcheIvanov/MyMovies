@@ -1,52 +1,70 @@
-﻿@model MyMovies.ViewModels.MovieDetailsModel
+﻿@model MyMovies.ViewModels.MovieDetailsDataModel
 
 @{ ViewBag.Title = "Details"; }
 
-<div class="container" style="text-align:center">
+@section Styles{
+    <link href="~/css/sidebar.css" rel="stylesheet" />
+}
 
-    <h1>@Model.Title</h1>
+<div class="row">
+    <div class="col-md-9">
+        <div class="container" style="text-align:center">
 
-    <img src="@Model.ImgUrl" alt="Alternate Text" style="display:block; margin-left:auto; margin-right:auto; width:80%" />
+            <h1>@Model.MovieDetails.Title</h1>
 
-    <h2> Stars</h2>
-    <p>@Model.Stars</p>
+            <img src="@Model.MovieDetails.ImgUrl" alt="Alternate Text" style="display:block; margin-left:auto; margin-right:auto; width:80%" />
 
-    <h2> Genre</h2>
-    <p>@Model.Genre</p>
+            <h2> Stars</h2>
+            <p>@Model.MovieDetails.Stars</p>
 
-    <h2> Storyline</h2>
-    <p>@Model.Storyline</p>
+            <h2> Genre</h2>
+            <p>@Model.MovieDetails.Genre</p>
 
-    <h2> Date created: @Model.DateCreated</h2>
+            <h2> Storyline</h2>
+            <p>@Model.MovieDetails.Storyline</p>
+
+            <h2> Date created: @Model.MovieDetails.DateCreated</h2>
+        </div>
+
+        <br />
+        <br />
+        <hr />
+        <h2>Comments: </h2>
+        <hr />
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form asp-controller="Comments" asp-action="Add" method="post" onsubmit="return validateForm()">
+                <input type="text" name="movieId" value="@Model.MovieDetails.Id" hidden />
+                <div class="form-group">
+                    <textarea type="text" name="comment" class="form-control" cols="20" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Comment</button>
+            </form>
+        }
+
+
+
+        @foreach (var comment in Model.MovieDetails.Comments.OrderByDescending(x => x.DateCreated))
+        {
+            <hr />
+
+            <p> <b>Comennted by:</b>  @comment.Username</p>
+            <p> <b>Date:</b>  @comment.DateCreated </p>
+            <p> @comment.Message</p>
+            @if (User.Identity.IsAuthenticated && User.FindFirst("Username").Value == comment.Username)
+            {
+                <a href="/Comments/Delete/@comment.Id" class="btn btn-danger btn-sm">Delete</a>
+            }
+        }
+    </div>
+    <div class="col-md-3">
+        <partial name="SidebarPartial" for="@Model.SidebarData">
+    </div>
+
 </div>
 
-<br />
-<br />
-<hr />
-<h2>Comments: </h2>
-<hr />
 
-@if (User.Identity.IsAuthenticated)
-{
-    <form asp-controller="Comments" asp-action="Add" method="post" onsubmit="return validateForm()">
-        <input type="text" name="movieId" value="@Model.Id" hidden />
-        <div class="form-group">
-            <textarea type="text" name="comment" class="form-control" cols="20" rows="5" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Comment</button>
-    </form>
-}
-
-
-
-@foreach (var comment in Model.Comments.OrderByDescending(x => x.DateCreated))
-{
-    <hr />
-
-    <p> <b>Comennted by:</b>  @comment.Username</p>
-    <p> <b>Date:</b>  @comment.DateCreated </p>
-    <p> @comment.Message</p>
-}
 
 @section Scripts{
     <script src="~/js/validator.js"></script>

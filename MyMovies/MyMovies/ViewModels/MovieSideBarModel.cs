@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 
 namespace MyMovies.ViewModels
 {
-    public class TopNewFiveSideBarModel
+    public class MovieSideBarModel
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public int Views { get; set; }
+
         public DateTime DateCreated { get; set; }
     }
 }

@@ -96,5 +96,15 @@ namespace MyMovies.Services
             
             
         }
+
+        public List<Movie> GetMostRecentMovies(int count)
+        {
+            return _moviesRepository.GetMostRecentMovies(count);
+        }
+
+        public List<Movie> GetTopMovies(int count)
+        {
+            return _moviesRepository.GetTopMovies(count);
+        }
     }
 }

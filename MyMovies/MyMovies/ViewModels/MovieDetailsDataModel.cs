@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace MyMovies.ViewModels
 {
-    public class MovieOverviewDataModel
+    public class MovieDetailsDataModel
     {
-        public List<MovieOverviewModel> OverviewMovies { get; set; }
+        public MovieDetailsModel MovieDetails { get; set; }
 
         public MovieSidebarDataModel SidebarData { get; set; } = new MovieSidebarDataModel();
-        
     }
 }

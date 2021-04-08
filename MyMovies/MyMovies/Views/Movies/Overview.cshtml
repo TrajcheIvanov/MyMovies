@@ -6,31 +6,7 @@
 
 
 @section Styles{
-    <style>
-        a {
-            cursor:pointer;
-            text-decoration:none;
-        }
-
-        a:hover{
-            text-decoration:none;
-        }
-        .recipeSidebarCard {
-            padding: 2px;
-            border: 1px solid grey;
-            margin: 2px;
-            color:white;
-            background-color:gray;
-            border-radius:5px;
-        }
-
-        .recipeSidebarCard:hover {
-            background-color:white;
-            color:grey;
-            transform:scale(0.9);
-        }
-
-    </style>
+    <link href="~/css/sidebar.css" rel="stylesheet" />
 }
 <br />
 <br />
@@ -50,36 +26,16 @@
             @foreach (var movie in Model.OverviewMovies)
             {
 
-<div class="card col col-3">
-    <img src="@movie.ImgUrl" alt="Movie Img" class="card-img-top" />
-    <h4 class="card-title">@movie.Title</h4>
-    <p class="card-text">@movie.Genre </p>
-    <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="btn-secondary"><b>More info</b></a>
-</div>}
+                <div class="card col col-3">
+                    <img src="@movie.ImgUrl" alt="Movie Img" class="card-img-top" />
+                    <h4 class="card-title">@movie.Title</h4>
+                    <p class="card-text">@movie.Genre </p>
+                     <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="btn-secondary"><b>More info</b></a>
+                </div>}
         </div>
     </div>
     <div class="col-3" >
-        <div>
-            <h3 style="text-align:center">Top 5 Movies</h3>
-            @foreach (var movie in Model.TopFiveViewed)
-            {<a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
-                    <div class="recipeSidebarCard">
-                        <p>Title: @movie.Title</p>
-                        <p> Viewes: @movie.Views </p>
-                    </div>
-                </a>
-            }
-        </div>
-        <div>
-            <h3 style="text-align:center">Top 5 new Movies</h3>
-            @foreach (var movie in Model.TopNewFive)
-            {<a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
-                    <div class="recipeSidebarCard">
-                        <p>Title: @movie.Title</p>
-                        <p> Date Created: @movie.DateCreated </p>
-                    </div>
-                </a>}
-        </div>
+        <partial name="SidebarPartial" for="@Model.SidebarData">
     </div>
 </div>
 
