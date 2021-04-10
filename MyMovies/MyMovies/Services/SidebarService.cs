@@ -1,29 +1,31 @@
-﻿using MyMovies.Mappings;
+﻿using Microsoft.Extensions.Options;
+using MyMovies.Common.Options;
+using MyMovies.Mappings;
 using MyMovies.Services.Interfaces;
 using MyMovies.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MyMovies.Services
 {
     public class SidebarService : ISidebarService
     {
         private IMoviesService _service;
-        public SidebarService(IMoviesService service)
+
+        private SidebarConfig _sidebarConfig;
+        public SidebarService(IMoviesService service, IOptions<SidebarConfig> sidebarConfig)
         {
             _service = service;
+            _sidebarConfig = sidebarConfig.Value;
         }
         public MovieSidebarDataModel GetSidebarData()
         {
             var sidebarDataModel = new MovieSidebarDataModel();
 
-            var mostRecentRecipes = _service.GetMostRecentMovies(5);
-            var topRecipes = _service.GetTopMovies(5);
+            var mostRecentMovies = _service.GetMostRecentMovies(_sidebarConfig.MostRecentMoviesCount);
+            var topMovies = _service.GetTopMovies(_sidebarConfig.TopMoviesCount);
 
-            sidebarDataModel.MostRecentMovies = mostRecentRecipes.Select(x => x.ToMovieSidebarModel()).ToList();
-            sidebarDataModel.TopMovies = topRecipes.Select(x => x.ToMovieSidebarModel()).ToList();
+            sidebarDataModel.MostRecentMovies = mostRecentMovies.Select(x => x.ToMovieSidebarModel()).ToList();
+            sidebarDataModel.TopMovies = topMovies.Select(x => x.ToMovieSidebarModel()).ToList();
 
             return sidebarDataModel;
         }

@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyMovies.Common.Options;
+using MyMovies.Custom;
 using MyMovies.Repositories;
 using MyMovies.Repositories.Interfaces;
 using MyMovies.Services;
@@ -31,13 +33,13 @@ namespace MyMovies
             //configure in startup
             //see configuration below
             services.AddDbContext<MyMoviesDbContext>(
-                x => x.UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=MyMovies;Trusted_Connection=True;")
+                x => x.UseSqlServer(Configuration.GetConnectionString("MyMovies"))
                 );
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
                 options =>
                 {
-                    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+                    options.ExpireTimeSpan = TimeSpan.FromDays(int.Parse(Configuration["CookieExpirationPeriod"]));
                     options.LoginPath = "/Auth/SignIn";
                     options.AccessDeniedPath = "/Auth/AccessDenied";
                 }
@@ -50,6 +52,9 @@ namespace MyMovies
                     policy.RequireClaim("IsAdmin", "True");
                 });
             });
+
+            //configure options
+            services.Configure<SidebarConfig>(Configuration.GetSection("SidebarConfig"));
 
             //register services
             object p = services.AddControllersWithViews().AddRazorRuntimeCompilation();
@@ -74,7 +79,7 @@ namespace MyMovies
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Info/InternalError");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -85,6 +90,9 @@ namespace MyMovies
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<RequestResponseLogMiddleware>();
+            app.UseMiddleware<ExceptionLoggingMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
