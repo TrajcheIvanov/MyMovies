@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyMovies.Common.Options;
+using MyMovies.Common.Services;
 using MyMovies.Custom;
 using MyMovies.Repositories;
 using MyMovies.Repositories.Interfaces;
@@ -63,6 +64,7 @@ namespace MyMovies
             services.AddTransient<IUsersService,UsersService>();
             services.AddTransient<ICommentsService, CommentsService>();
             services.AddTransient<ISidebarService, SidebarService>();
+            services.AddTransient<ILogService, LogServices>();
 
             //register repositories
             services.AddTransient<IMoviesRepository, MoviesRepository>();
@@ -91,8 +93,10 @@ namespace MyMovies
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMiddleware<RequestResponseLogMiddleware>();
+            
             app.UseMiddleware<ExceptionLoggingMiddleware>();
+
+            app.UseMiddleware<RequestResponseLogMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

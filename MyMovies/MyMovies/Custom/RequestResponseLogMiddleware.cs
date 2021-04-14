@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using MyMovies.Common.Models;
+using MyMovies.Common.Services;
+using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
 
 namespace MyMovies.Custom
@@ -11,12 +15,18 @@ namespace MyMovies.Custom
             _next = next;
         }
 
-        public async Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext httpContext, ILogService logService)
         {
-            //some logic
-            //log httpContext.Request
+            var requestLog = JsonConvert.SerializeObject(new { ReguestPath = httpContext.Request.Path });
+            var requestLogData = new LogData() { Type = LogType.Info, DateCreated = DateTime.Now, Message=requestLog };
+            logService.Log(requestLogData);
+
             await _next(httpContext);
-            //log httpContext.Response
+
+            var responseLog = JsonConvert.SerializeObject(new { ResponseStatusCode = httpContext.Response.StatusCode.ToString() });
+            var responseLogData = new LogData() { Type = LogType.Info, DateCreated = DateTime.Now, Message = responseLog };
+            logService.Log(responseLogData);
+
         }
     }
 }

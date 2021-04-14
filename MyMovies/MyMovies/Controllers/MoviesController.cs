@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyMovies.Common.Exceptions;
+using MyMovies.Common.Models;
+using MyMovies.Common.Services;
 using MyMovies.Mappings;
 using MyMovies.Models;
 using MyMovies.Services.Interfaces;
@@ -16,15 +18,20 @@ namespace MyMovies.Controllers
         private IMoviesService _service { get; set; }
 
         private ISidebarService _sidebarService { get; set; }
-        public MoviesController(IMoviesService service, ISidebarService sidebarService)
+
+        private ILogService _logService { get; set; }
+        public MoviesController(IMoviesService service, ISidebarService sidebarService, ILogService logService)
         {
             _service = service;
             _sidebarService = sidebarService;
+            _logService = logService;
         }
 
         [AllowAnonymous]
         public IActionResult Overview(string title)
         {
+            //throw new Exception("this is test exception");
+
             var movies = _service.GetRecipesByTitle(title);
 
             var overviewDataModel = new MovieOverviewDataModel();
@@ -87,11 +94,15 @@ namespace MyMovies.Controllers
             {
                 var domainModel = movie.ToModel();
                 _service.CreateMovie(domainModel);
+                var userId = User.FindFirst("Id");
+                var logData = new LogData() { Type = LogType.Info, DateCreated = DateTime.Now, Message = $"User with id {userId} created movie {movie.Title}" };
+                _logService.Log(logData);
+                
                 return RedirectToAction("ManageMovies", new { SuccessMessage = "Movie added sucessfully"});
             }
 
             return View(movie);
-        }
+        } 
 
         public IActionResult Delete(int Id)
         {

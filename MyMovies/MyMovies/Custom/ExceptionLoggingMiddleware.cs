@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using MyMovies.Common.Models;
+using MyMovies.Common.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -12,15 +14,18 @@ namespace MyMovies.Custom
             _next = next;
         }
 
-        public async Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext httpContext, ILogService logService)
         {
             //customer logic for http context
             try
             {
                 await _next(httpContext);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var logData = new LogData() { Type = LogType.Error, DateCreated = DateTime.Now, Message = ex.ToString() };
+
+                logService.Log(logData);
 
                 throw;
             }
