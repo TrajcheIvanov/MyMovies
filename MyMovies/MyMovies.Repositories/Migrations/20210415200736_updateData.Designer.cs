@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyMovies.Repositories;
 
 namespace MyMovies.Repositories.Migrations
 {
     [DbContext(typeof(MyMoviesDbContext))]
-    partial class MyMoviesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210415200736_updateData")]
+    partial class updateData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,7 +70,7 @@ namespace MyMovies.Repositories.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MovieTypeId")
+                    b.Property<int?>("MovieTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Stars")
@@ -92,28 +94,6 @@ namespace MyMovies.Repositories.Migrations
                     b.HasIndex("MovieTypeId");
 
                     b.ToTable("Movies");
-                });
-
-            modelBuilder.Entity("MyMovies.Models.MovieLike", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MovieLikes");
                 });
 
             modelBuilder.Entity("MyMovies.Models.MovieType", b =>
@@ -180,24 +160,7 @@ namespace MyMovies.Repositories.Migrations
                 {
                     b.HasOne("MyMovies.Models.MovieType", "MovieType")
                         .WithMany("Movies")
-                        .HasForeignKey("MovieTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MyMovies.Models.MovieLike", b =>
-                {
-                    b.HasOne("MyMovies.Models.Movie", "Movie")
-                        .WithMany("MovieLikes")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyMovies.Models.User", "User")
-                        .WithMany("MovieLikes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MovieTypeId");
                 });
 #pragma warning restore 612, 618
         }

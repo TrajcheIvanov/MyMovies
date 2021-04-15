@@ -13,5 +13,8 @@ namespace MyMovies.Repositories
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<MovieType> MovieTypes { get; set; }
+
+        public DbSet<MovieLike> MovieLikes { get; set; }
     }
 }

@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20210325182546_updateTables.cs" />
     <Compile Remove="Migrations\20210325182546_updateTables.Designer.cs" />
+    <Compile Remove="Migrations\20210415200441_connectMovieTypesAndMovie.cs" />
+    <Compile Remove="Migrations\20210415200441_connectMovieTypesAndMovie.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

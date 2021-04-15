@@ -26,5 +26,12 @@ namespace MyMovies.Models
 
         public int Views { get; set; }
         public List<Comment> Comments { get; set; }
+
+        public List<MovieLike> MovieLikes { get; set; }
+        public int MovieTypeId { get; set; }
+
+        public MovieType MovieType { get; set; }
+
+        
     }
 }
