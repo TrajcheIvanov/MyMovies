@@ -46,16 +46,9 @@ namespace MyMovies.Services
             _moviesRepository.Add(movie);
         }
 
-        public List<Movie> GetRecipesByTitle(string title)
+        public List<Movie> GetMoviesWithFilters(string title)
         {
-            if (title == null)
-            {
-                return _moviesRepository.GetAll();
-            }
-            else
-            {
-                return _moviesRepository.GetByTitle(title);
-            }
+            return _moviesRepository.GetMoviesWithFilters(title);
         }
 
         public void Delete(int Id)
@@ -84,6 +77,7 @@ namespace MyMovies.Services
                 movieForUpdate.Storyline = movie.Storyline;
                 movieForUpdate.Genre = movie.Genre;
                 movieForUpdate.DateModified = DateTime.Now;
+                movieForUpdate.MovieTypeId = movie.MovieTypeId;
 
                 _moviesRepository.Update(movieForUpdate);
             }

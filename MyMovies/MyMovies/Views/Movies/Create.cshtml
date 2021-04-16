@@ -9,7 +9,7 @@
 <form asp-controller="Movies" asp-action="Create" method="post" onsubmit="return validateForm()">
     <div class="form-group">
         <label class="control-label" asp-for="Title"> <b>  Title</b> </label>
-        <input type="text" asp-for="Title" class="form-control"  required/>
+        <input type="text" asp-for="Title" class="form-control" required />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -19,13 +19,21 @@
     </div>
     <div class="form-group">
         <label class="control-label" asp-for="Stars"><b> Stars </b> </label>
-        <input type="text" asp-for="Stars" class="form-control" required/>
+        <input type="text" asp-for="Stars" class="form-control" required />
         <span asp-validation-for="Stars" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label class="control-label" asp-for="ImgUrl"><b> ImgUrl </b> </label>
-        <input type="text" asp-for="ImgUrl" class="form-control" required/>
+        <input type="text" asp-for="ImgUrl" class="form-control" required />
         <span asp-validation-for="ImgUrl" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label" asp-for="MovieTypeId">Movie type</label>
+        <select asp-for="MovieTypeId" class="form-control">
+            @foreach (var movieType in Model.MovieTypes)
+            {
+<option value="@movieType.Id">@movieType.Name</option>            }
+        </select>
     </div>
     <div class="form-group">
         <label class="control-label" asp-for="Storyline"><b> Storyline </b>  </label>

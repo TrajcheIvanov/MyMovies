@@ -26,12 +26,30 @@
             @foreach (var movie in Model.OverviewMovies)
             {
 
-                <div class="card col col-3">
-                    <img src="@movie.ImgUrl" alt="Movie Img" class="card-img-top" />
-                    <h4 class="card-title">@movie.Title</h4>
-                    <p class="card-text">@movie.Genre </p>
-                     <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="btn-secondary"><b>More info</b></a>
-                </div>}
+            <div class="card col col-3">
+                <img src="@movie.ImgUrl" alt="Movie Img" class="card-img-top" />
+                <h4 class="card-title">@movie.Title <span class="badge rounded-pill bg-warning text-dark">@movie.MovieType</span></h4>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (movie.MovieLikes.Any(x => x.UserId == int.Parse(User.FindFirst("Id").Value)))
+                    {
+                        <a asp-controller="MovieLikes" asp-action="Remove" asp-route-movieId="@movie.Id">
+                            <i class="fas fa-thumbs-up"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="MovieLikes" asp-action="Add" asp-route-movieId="@movie.Id">
+                            <i class="far fa-thumbs-up"></i>
+                        </a>
+                    }
+                     <span>Likes: @movie.MovieLikes.Count()</span>    
+
+                }
+
+                <p class="card-text">@movie.Genre </p>
+                <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="btn-secondary"><b>More info</b></a>
+            </div>}
         </div>
     </div>
     <div class="col-3" >

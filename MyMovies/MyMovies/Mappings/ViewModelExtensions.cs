@@ -14,6 +14,7 @@ namespace MyMovies.Mappings
                 Stars = viewModel.Stars,
                 Storyline = viewModel.Storyline,
                 Genre = viewModel.Genre,
+                MovieTypeId = viewModel.MovieTypeId
             };
 
         }
@@ -28,6 +29,7 @@ namespace MyMovies.Mappings
                 Stars = viewModel.Stars,
                 Storyline = viewModel.Storyline,
                 Genre = viewModel.Genre,
+                MovieTypeId = viewModel.MovieTypeId
             };
         }
 

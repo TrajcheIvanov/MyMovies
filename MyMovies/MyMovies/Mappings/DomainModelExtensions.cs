@@ -16,8 +16,30 @@ namespace MyMovies.Mappings
                 Title = movie.Title,
                 ImgUrl = movie.ImgUrl,
                 Genre = movie.Genre,
-                Views = movie.Views
+                Views = movie.Views,
+                MovieType = movie.MovieType.Name,
+                MovieLikes = movie.MovieLikes.Select(x => x.ToMovieLikeModel()).ToList()
+                
 
+            };
+        }
+
+        public static MovieLikeModel ToMovieLikeModel(this MovieLike movieLike)
+        {
+            return new MovieLikeModel()
+            {
+                Id = movieLike.Id,
+                UserId = movieLike.UserId,
+                MovieId = movieLike.MovieId
+            };
+        }
+
+        public static MovieTypeModel ToMovieTypeModel(this MovieType movieType)
+        {
+            return new MovieTypeModel()
+            {
+                Id = movieType.Id,
+                Name = movieType.Name,
             };
         }
 
@@ -42,6 +64,7 @@ namespace MyMovies.Mappings
                 Stars = movie.Stars,
                 ImgUrl = movie.ImgUrl,
                 DateCreated = movie.DateCreated,
+                MovieType = movie.MovieType.Name,
                 Comments = movie.Comments.Select(x=> x.ToCommentModel()).ToList()
 
             };
@@ -57,6 +80,7 @@ namespace MyMovies.Mappings
                 Storyline = movie.Storyline,
                 Stars = movie.Stars,
                 ImgUrl = movie.ImgUrl,
+                MovieTypeId = movie.MovieTypeId
 
             };
         }

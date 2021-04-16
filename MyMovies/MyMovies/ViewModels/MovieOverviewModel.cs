@@ -1,5 +1,7 @@
 ﻿
 
+using System.Collections.Generic;
+
 namespace MyMovies.ViewModels
 {
     public class MovieOverviewModel
@@ -13,5 +15,9 @@ namespace MyMovies.ViewModels
         public string Genre { get; set; }
 
         public int Views { get; set; }
+
+        public string MovieType { get; set; }
+
+        public List<MovieLikeModel> MovieLikes { get; set; }
     }
 }

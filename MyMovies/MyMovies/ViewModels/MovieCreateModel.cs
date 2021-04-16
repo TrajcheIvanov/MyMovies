@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -17,6 +18,9 @@ namespace MyMovies.ViewModels
         public string Genre { get; set; }
         [Required]
         public string Storyline { get; set; }
+
+        public int MovieTypeId { get; set; }
+        public List<MovieTypeModel> MovieTypes { get; set; }
         
     }
 }

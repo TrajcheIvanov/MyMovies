@@ -32,7 +32,7 @@ namespace MyMovies.Services
         {
             var like = _movieLikeRepository.Get(movieId, userId);
 
-            if (like == null)
+            if (like != null)
             {
                 _movieLikeRepository.Delete(like);
             }

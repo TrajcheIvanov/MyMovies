@@ -15,15 +15,27 @@ namespace MyMovies.Repositories
         {
         }
 
-        public List<Movie> GetByTitle(string title)
+        public List<Movie> GetMoviesWithFilters(string title)
         {
-            var result = _context.Movies.Where(x => x.Title.Contains(title)).ToList();
-            return result;
+            var query = _context.Movies.Include(x => x.MovieType).Include(x => x.MovieLikes);
+
+            if (title != null)
+            {
+                query.Where(x => x.Title.Contains(title));
+            }
+
+            var movies = query.ToList();
+
+            return movies;
+
         }
+       
+
 
         public override Movie GetById(int entityId)
         {
             var movie = _context.Movies
+                .Include(x => x.MovieType)
                 .Include(x => x.Comments)
                     .ThenInclude(x => x.User)
                 .FirstOrDefault(x => x.Id == entityId);

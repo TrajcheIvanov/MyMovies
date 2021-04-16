@@ -15,6 +15,8 @@ namespace MyMovies.ViewModels
         public string Genre { get; set; }
         
         public string Storyline { get; set; }
+
+        public string MovieType { get; set; }
         
         public DateTime DateCreated { get; set; }
 

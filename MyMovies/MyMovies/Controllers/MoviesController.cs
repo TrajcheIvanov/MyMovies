@@ -15,16 +15,23 @@ namespace MyMovies.Controllers
     [Authorize(Policy = "IsAdmin")]
     public class MoviesController : Controller
     {
-        private IMoviesService _service { get; set; }
+        private IMoviesService _moviesService { get; set; }
 
         private ISidebarService _sidebarService { get; set; }
 
         private ILogService _logService { get; set; }
-        public MoviesController(IMoviesService service, ISidebarService sidebarService, ILogService logService)
+
+        private IMovieTypeService _moviesTypesService { get; set; }
+        public MoviesController(
+            IMoviesService service, 
+            ISidebarService sidebarService, 
+            ILogService logService,
+            IMovieTypeService moviesTypesService)
         {
-            _service = service;
+            _moviesService = service;
             _sidebarService = sidebarService;
             _logService = logService;
+            _moviesTypesService = moviesTypesService;
         }
 
         [AllowAnonymous]
@@ -32,7 +39,7 @@ namespace MyMovies.Controllers
         {
             //throw new Exception("this is test exception");
 
-            var movies = _service.GetRecipesByTitle(title);
+            var movies = _moviesService.GetMoviesWithFilters(title);
 
             var overviewDataModel = new MovieOverviewDataModel();
 
@@ -49,7 +56,7 @@ namespace MyMovies.Controllers
             ViewBag.ErrorMessage = errorMEssage;
             ViewBag.SuccessMessage = successMessage;
             ViewBag.UpdateMEssage = updateMessage;
-            var movies = _service.GetAllMovies();
+            var movies = _moviesService.GetAllMovies();
 
             var manageModels = movies.Select(x => x.ToManageMovieModel()).ToList();
             return View(manageModels);
@@ -60,7 +67,7 @@ namespace MyMovies.Controllers
         {
             try
             {
-                var movie = _service.GetMovieDetails(id);
+                var movie = _moviesService.GetMovieDetails(id);
 
                 if (movie == null)
                 {
@@ -84,7 +91,13 @@ namespace MyMovies.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var movieTypes = _moviesTypesService.GetAll();
+            var viewModels = movieTypes.Select(x => x.ToMovieTypeModel()).ToList();
+
+            var viewModel = new MovieCreateModel();
+            viewModel.MovieTypes = viewModels;
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -93,7 +106,7 @@ namespace MyMovies.Controllers
             if (ModelState.IsValid)
             {
                 var domainModel = movie.ToModel();
-                _service.CreateMovie(domainModel);
+                _moviesService.CreateMovie(domainModel);
                 var userId = User.FindFirst("Id");
                 var logData = new LogData() { Type = LogType.Info, DateCreated = DateTime.Now, Message = $"User with id {userId} created movie {movie.Title}" };
                 _logService.Log(logData);
@@ -108,7 +121,7 @@ namespace MyMovies.Controllers
         {
             try
             {
-                _service.Delete(Id);
+                _moviesService.Delete(Id);
                 return RedirectToAction("ManageMovies", new { SuccessMessage = "Movie deleted sucessfully" });
             }
             catch (NotFoundException ex)
@@ -127,11 +140,18 @@ namespace MyMovies.Controllers
         {
             try
             {
-               var movie = _service.GetMovieById(Id);
+               var movie = _moviesService.GetMovieById(Id);
 
                 if (movie != null)
                 {
-                    return View(movie.ToUpdateModel());
+                    var viewModel = movie.ToUpdateModel();
+
+                    var movieTypes = _moviesTypesService.GetAll();
+                    var viewModels = movieTypes.Select(x => x.ToMovieTypeModel()).ToList();
+
+                    viewModel.MovieTypes = viewModels;
+
+                    return View(viewModel);
                 } 
                 else
                 {
@@ -162,7 +182,7 @@ namespace MyMovies.Controllers
             {
                 try
                 {
-                    _service.Update(movie.ToModel());
+                    _moviesService.Update(movie.ToModel());
                     return RedirectToAction("ManageMovies", new { UpdateMEssage = "Movie updated sucessfully" });
                 }
                 catch (NotFoundException ex)
