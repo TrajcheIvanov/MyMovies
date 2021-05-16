@@ -52,7 +52,7 @@
             <p> <b>Comennted by:</b>  @comment.Username</p>
             <p> <b>Date:</b>  @comment.DateCreated </p>
             <p> @comment.Message</p>
-            @if (User.Identity.IsAuthenticated && User.FindFirst("Username").Value == comment.Username)
+            @if ((User.Identity.IsAuthenticated && User.FindFirst("Username").Value == comment.Username) || (User.FindFirst("IsAdmin").Value == "True"))
             {
                 <a href="/Comments/Delete/@comment.Id" class="btn btn-danger btn-sm">Delete</a>
             }

@@ -65,6 +65,7 @@ namespace MyMovies.Controllers
         [AllowAnonymous]
         public IActionResult Details(int id)
         {
+            var user = User;
             try
             {
                 var movie = _moviesService.GetMovieDetails(id);

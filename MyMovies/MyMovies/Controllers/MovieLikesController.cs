@@ -20,7 +20,9 @@ namespace MyMovies.Controllers
 
             _movieLikeService.Add(movieId, userId);
 
-            return RedirectToAction("Overview", "Movies");
+            //return RedirectToAction("Overview", "Movies");
+
+            return Ok();
 
         }
 
@@ -30,7 +32,9 @@ namespace MyMovies.Controllers
 
             _movieLikeService.Remove(movieId, userId);
 
-            return RedirectToAction("Overview", "Movies");
+            //return RedirectToAction("Overview", "Movies");
+
+            return Ok();
 
         }
     }

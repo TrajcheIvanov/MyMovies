@@ -33,17 +33,25 @@
                 {
                     if (movie.MovieLikes.Any(x => x.UserId == int.Parse(User.FindFirst("Id").Value)))
                     {
-                        <a asp-controller="MovieLikes" asp-action="Remove" asp-route-movieId="@movie.Id">
-                            <i class="fas fa-thumbs-up"></i>
-                        </a>
+                        @*<a asp-controller="MovieLikes" asp-action="Remove" asp-route-movieId="@movie.Id">
+                    <i class="fas fa-thumbs-up"></i>
+                </a>*@
+                        <div>
+                            <i class="fas fa-thumbs-up text-primary" onclick="removeLike(@movie.Id, event)"></i>
+                        </div>
                     }
                     else
                     {
-                        <a asp-controller="MovieLikes" asp-action="Add" asp-route-movieId="@movie.Id">
+                        @*<a asp-controller="MovieLikes" asp-action="Add" asp-route-movieId="@movie.Id" id="likeThumb">
                             <i class="far fa-thumbs-up"></i>
-                        </a>
+                        </a>*@
+                        <div>
+                            <i class="far fa-thumbs-up text-primary" onclick="addLike(@movie.Id, event)"></i>
+                        </div>
+
                     }
-                     <span>Likes: @movie.MovieLikes.Count()</span>    
+                    <p> Likes: <span> @movie.MovieLikes.Count()</span></p>
+
 
                 }
 
@@ -56,6 +64,57 @@
         <partial name="SidebarPartial" for="@Model.SidebarData">
     </div>
 </div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function removeLike(id , event) {
+            var url = "https://localhost:44366/MovieLikes/Remove?movieId=" + id;
+           
+            axios.get(url)
+                .then(function (response) {
+                    console.log("remove like in overview ")
+                    var counter = event.target.parentNode.nextElementSibling.firstChild.nextElementSibling;
+                    var currentCount = parseInt(counter.innerHTML) - 1;
+                    counter.innerHTML = currentCount;
+                    var icon = document.createElement("i");
+                    var likeThumb = event.target.parentNode;
+                    icon.classList.add("far")
+                    icon.classList.add("fa-thumbs-up")
+                    icon.classList.add("text-primary")
+                    icon.onclick = function (event) {addLike(id, event)}
+                    likeThumb.innerHTML = "";
+                    likeThumb.appendChild(icon);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        function addLike(id, event) {
+            var url = "https://localhost:44366/MovieLikes/Add?movieId=" + id;
+
+            axios.get(url)
+                .then(function (response) {
+                    console.log("add like in overview ")
+                    var counter = event.target.parentNode.nextElementSibling.firstChild.nextElementSibling;
+                    var currentCount = parseInt(counter.innerHTML) + 1;
+                    counter.innerHTML = currentCount;
+                    var icon = document.createElement("i");
+                    var likeThumb = event.target.parentNode;
+                    icon.classList.add("fas")
+                    icon.classList.add("fa-thumbs-up")
+                    icon.classList.add("text-primary")
+                    icon.onclick = function (event) { removeLike(id, event) }
+                    likeThumb.innerHTML = "";
+                    likeThumb.appendChild(icon);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+    </script>
+ }
 
 
 
