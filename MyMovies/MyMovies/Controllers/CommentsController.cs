@@ -19,14 +19,15 @@ namespace MyMovies.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(CommentCreateModel commentCreateModel)
+        public IActionResult Add([FromBody]CommentCreateModel commentCreateModel)
         {
             var userId = int.Parse(User.FindFirst("Id").Value);
 
             var response = _commentsService.Add(commentCreateModel.Comment, commentCreateModel.MovieId, userId);
             if (response.IsSuccessful)
             {
-                return RedirectToAction("Details", "Movies", new { id = commentCreateModel.MovieId });
+                //return RedirectToAction("Details", "Movies", new { id = commentCreateModel.MovieId });
+                return Ok();
             }
             else
             {
@@ -45,7 +46,7 @@ namespace MyMovies.Controllers
                 return RedirectToAction("ErrorNotFound", "Info");
             }
 
-            if (comment.UserId != int.Parse(User.FindFirst("Id").Value))
+            if ((comment.UserId != int.Parse(User.FindFirst("Id").Value))  && (User.FindFirst("IsAdmin").Value == "False"))
             {
                 return RedirectToAction("AccessDenied", "Auth");
             }

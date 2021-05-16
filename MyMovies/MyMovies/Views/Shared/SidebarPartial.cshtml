@@ -1,10 +1,10 @@
 ﻿@model MyMovies.ViewModels.MovieSidebarDataModel
 
 
-<h2>Top recipes:</h2>
+<h2>Top Movies:</h2>
 @foreach (var movie in Model.TopMovies)
 {
-<a asp-controller="Recipes" asp-action="Details" asp-route-id="@movie.Id">
+<a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
     <div class="recipeSidebarCard">
         <div>@movie.Title</div>
         <div>Date created: @movie.DateCreated</div>
@@ -12,10 +12,10 @@
     </div>
 </a>}
 
-<h2>Most recent recipes:</h2>
+<h2>Most recent Movies:</h2>
 @foreach (var movie in Model.MostRecentMovies)
 {
-<a asp-controller="Recipes" asp-action="Details" asp-route-id="@movie.Id">
+<a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
     <div class="recipeSidebarCard">
         <div>@movie.Title</div>
         <div>Date created: @movie.DateCreated</div>

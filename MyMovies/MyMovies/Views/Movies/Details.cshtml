@@ -31,32 +31,50 @@
         <hr />
         <h2>Comments: </h2>
         <hr />
+        
+    
 
         @if (User.Identity.IsAuthenticated)
         {
-            <form asp-controller="Comments" asp-action="Add" method="post" onsubmit="return validateForm()">
+            
+             <div >
+                <textarea type="text" name="comment" class="form-control" cols="20" rows="5" required></textarea>
+                <button type="submit" class="btn btn-primary m-2" onclick="AddComment(@Model.MovieDetails.Id, event)">Add Comment</button>
+             </div>
+                
+                @*<button type="submit" class="btn btn-primary">Add Comment</button>*@
+
+
+
+            @*<form asp-controller="Comments" asp-action="Add" method="post" onsubmit="return validateForm()">
                 <input type="text" name="movieId" value="@Model.MovieDetails.Id" hidden />
                 <div class="form-group">
                     <textarea type="text" name="comment" class="form-control" cols="20" rows="5" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Add Comment</button>
-            </form>
+            </form>*@
         }
 
 
+        <div id="commentSection">
+             @foreach (var comment in Model.MovieDetails.Comments.OrderByDescending(x => x.DateCreated))
+              {
+                <div>
+                <hr />
 
-        @foreach (var comment in Model.MovieDetails.Comments.OrderByDescending(x => x.DateCreated))
-        {
-            <hr />
+                     <p> <b>Comennted by:</b>  @comment.Username</p>
+                     <p> <b>Date:</b>  @comment.DateCreated </p>
+                     <p> @comment.Message</p>
+                        @if ((User.Identity.IsAuthenticated && User.FindFirst("Username").Value == comment.Username) || (User.FindFirst("IsAdmin").Value == "True"))
+                         {
+                            <a onclick="deleteComment(@comment.Id, event)" class="btn btn-danger btn-sm text-white">Delete</a>
+                            @*<a href="/Comments/Delete/@comment.Id" class="btn btn-danger btn-sm">Delete</a>*@
+                         }
+                 </div>
+              }
+         </div>
 
-            <p> <b>Comennted by:</b>  @comment.Username</p>
-            <p> <b>Date:</b>  @comment.DateCreated </p>
-            <p> @comment.Message</p>
-            @if ((User.Identity.IsAuthenticated && User.FindFirst("Username").Value == comment.Username) || (User.FindFirst("IsAdmin").Value == "True"))
-            {
-                <a href="/Comments/Delete/@comment.Id" class="btn btn-danger btn-sm">Delete</a>
-            }
-        }
+       
     </div>
     <div class="col-md-3">
         <partial name="SidebarPartial" for="@Model.SidebarData">
@@ -68,4 +86,83 @@
 
 @section Scripts{
     <script src="~/js/validator.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <script>
+        function AddComment(id, event) {
+            console.log("Add comment");
+            console.log("For movie with Id: " + id);
+
+
+            var textarea = event.target.previousElementSibling;
+            var commentToAdd = textarea.value;
+            var user = "@User.FindFirst("Username").Value";
+
+            var commentCreateModel = {
+                Comment: commentToAdd,
+                MovieId: id,
+            }
+            console.log(commentCreateModel.Comment)
+
+
+            axios.post("https://localhost:44366/Comments/Add", commentCreateModel)
+                .then(function (response) {
+                    console.log(`Added comment`);
+                    textarea.value = "";
+                    var comment = document.createElement("div");
+                    var userName = document.createElement("p");
+                    userName.innerHTML = "<b> Comennted by:</b> " + user;
+                    var dateCreated = document.createElement("p");
+
+                    dateCreated.innerHTML = "<b>Date:</b> " + new Date().toLocaleString();
+                    var message = document.createElement("p");
+                    message.innerHTML = commentCreateModel.Comment;
+
+                    var button = document.createElement("a");
+                    button.classList.add("btn");
+                    button.classList.add("btn-danger");
+                    button.classList.add("btn-sm");
+                    button.classList.add("text-white");
+                    // need to get comment id from the response and pass it to the deleteComment function
+                    button.onclick = function (event) { deleteComment(id, event) }
+                    button.innerHTML = "Delete";
+                    
+
+                    comment.appendChild(userName);
+                    comment.appendChild(dateCreated);
+                    comment.appendChild(message);
+                    comment.appendChild(button);
+
+                   
+
+                    var commentSection = document.getElementById("commentSection");
+                    commentSection.insertBefore(comment, commentSection.firstChild);
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+
+        }
+
+        function deleteComment(id, event) {
+            console.log("deleting comment")
+            console.log(event.target.parentNode)
+
+            var url = "https://localhost:44366/Comments/Delete?id=" + id;
+
+            axios.get(url)
+                .then(function (response) {
+                    console.log("comment deleted")
+                    var commentForDelete = event.target.parentNode;
+                    commentForDelete.innerHTML="";
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+
+    </script>
+
 } 
