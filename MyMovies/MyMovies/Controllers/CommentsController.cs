@@ -27,7 +27,7 @@ namespace MyMovies.Controllers
             if (response.IsSuccessful)
             {
                 //return RedirectToAction("Details", "Movies", new { id = commentCreateModel.MovieId });
-                return Ok();
+                return Ok(response);
             }
             else
             {

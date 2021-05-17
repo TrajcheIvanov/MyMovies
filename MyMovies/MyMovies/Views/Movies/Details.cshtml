@@ -124,7 +124,7 @@
                     button.classList.add("btn-sm");
                     button.classList.add("text-white");
                     // need to get comment id from the response and pass it to the deleteComment function
-                    button.onclick = function (event) { deleteComment(id, event) }
+                    button.onclick = function (event) { deleteComment(response.data.commentId, event) }
                     button.innerHTML = "Delete";
                     
 
@@ -133,8 +133,8 @@
                     comment.appendChild(message);
                     comment.appendChild(button);
 
-                   
-
+                    console.log(response.data.commentId);
+                    
                     var commentSection = document.getElementById("commentSection");
                     commentSection.insertBefore(comment, commentSection.firstChild);
 

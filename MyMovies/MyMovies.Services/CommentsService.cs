@@ -19,9 +19,9 @@ namespace MyMovies.Services
             _moviesService = moviesService;
         }
 
-        public StatusModel Add(string comment, int movieId, int userId)
+        public CommentStatusModel Add(string comment, int movieId, int userId)
         {
-            var response = new StatusModel();
+            var response = new CommentStatusModel();
 
             var movie = _moviesService.GetMovieById(movieId);
 
@@ -36,6 +36,7 @@ namespace MyMovies.Services
                 };
 
                 _commentsRepository.Add(newComment);
+                response.CommentId = newComment.Id;
             }
             else
             {
@@ -43,6 +44,7 @@ namespace MyMovies.Services
                 response.Message = $"The movie with Id {movieId} was not found";
             }
 
+            
             return response;
         }
 
