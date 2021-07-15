@@ -1,0 +1,6 @@
+{"Type":0,"Message":"{\"ReguestPath\":\"/\"}","DateCreated":"2021-05-25T18:38:01.6126838+02:00"}
+{"Type":0,"Message":"{\"ResponseStatusCode\":\"200\"}","DateCreated":"2021-05-25T18:38:07.8954425+02:00"}
+{"Type":0,"Message":"{\"ReguestPath\":\"/Movies/Overview\"}","DateCreated":"2021-05-25T18:38:14.3569918+02:00"}
+{"Type":0,"Message":"{\"ResponseStatusCode\":\"200\"}","DateCreated":"2021-05-25T18:38:14.4546181+02:00"}
+{"Type":0,"Message":"{\"ReguestPath\":\"/Movies/Details/3\"}","DateCreated":"2021-05-25T18:38:57.5301893+02:00"}
+{"Type":0,"Message":"{\"ReguestPath\":\"/Movies/Details/2\"}","DateCreated":"2021-05-25T18:39:12.3930653+02:00"}

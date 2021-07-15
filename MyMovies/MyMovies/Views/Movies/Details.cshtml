@@ -65,7 +65,7 @@
                      <p> <b>Comennted by:</b>  @comment.Username</p>
                      <p> <b>Date:</b>  @comment.DateCreated </p>
                      <p> @comment.Message</p>
-                        @if ((User.Identity.IsAuthenticated && User.FindFirst("Username").Value == comment.Username) || (User.FindFirst("IsAdmin").Value == "True"))
+                        @if (User.Identity.IsAuthenticated && User.FindFirst("Username").Value == comment.Username)
                          {
                             <a onclick="deleteComment(@comment.Id, event)" class="btn btn-danger btn-sm text-white">Delete</a>
                             @*<a href="/Comments/Delete/@comment.Id" class="btn btn-danger btn-sm">Delete</a>*@
@@ -96,7 +96,14 @@
 
             var textarea = event.target.previousElementSibling;
             var commentToAdd = textarea.value;
-            var user = "@User.FindFirst("Username").Value";
+
+            let user = "";
+            if (@User.Identity.IsAuthenticated.ToString().ToLower()) {
+                user = "@User.FindFirst("Username").Value";
+            }
+
+            
+
 
             var commentCreateModel = {
                 Comment: commentToAdd,
@@ -126,7 +133,7 @@
                     // need to get comment id from the response and pass it to the deleteComment function
                     button.onclick = function (event) { deleteComment(response.data.commentId, event) }
                     button.innerHTML = "Delete";
-                    
+
 
                     comment.appendChild(userName);
                     comment.appendChild(dateCreated);
@@ -134,7 +141,7 @@
                     comment.appendChild(button);
 
                     console.log(response.data.commentId);
-                    
+
                     var commentSection = document.getElementById("commentSection");
                     commentSection.insertBefore(comment, commentSection.firstChild);
 
