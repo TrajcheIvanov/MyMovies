@@ -1,1 +1,1 @@
-# MyMovies
+# MyMovies - MVC App
